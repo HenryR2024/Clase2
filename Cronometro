@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #cronometro {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="cronometro">00:00:00</div>
+    <button id="inicio">Inicio</button>
+    <button id="parada">Parada</button>
+    <button id="reset">Reset</button>
+
+    <script>
+        let segundos = 0;
+        let minutos = 0;
+        let horas = 0;
+        let intervalo;
+        let enMarcha = false;
+
+        // Actualizar el cronómetro
+        function actualizarCronometro() {
+            segundos++;
+            if (segundos === 60) {
+                segundos = 0;
+                minutos++;
+            }
+            if (minutos === 60) {
+                minutos = 0;
+                horas++;
+            }
+            document.getElementById('cronometro').textContent = 
+                (horas < 10 ? '0' + horas : horas) + ':' +
+                (minutos < 10 ? '0' + minutos : minutos) + ':' +
+                (segundos < 10 ? '0' + segundos : segundos);
+        }
+
+        // Iniciar el cronómetro
+        document.getElementById('inicio').addEventListener('click', function() {
+            if (!enMarcha) {
+                intervalo = setInterval(actualizarCronometro, 1000);
+                enMarcha = true;
+            }
+        });
+
+        // Parar el cronómetro
+        document.getElementById('parada').addEventListener('click', function() {
+            clearInterval(intervalo);
+            enMarcha = false;
+        });
+
+        // Resetear el cronómetro
+        document.getElementById('reset').addEventListener('click', function() {
+            clearInterval(intervalo);
+            enMarcha = false;
+            segundos = 0;
+            minutos = 0;
+            horas = 0;
+            document.getElementById('cronometro').textContent = "00:00:00";
+        });
+    </script>
+</body>
+</html>
